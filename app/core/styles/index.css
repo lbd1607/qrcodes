@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .hero {
+    @apply w-full text-[#333];
+  }
+}
+
+.title {
+  @apply m-0 w-full pt-20;
+  font-size: 48px;
+}
+
+.title,
+.description {
+  @apply text-center;
+}
+
+/* Div that wraps label and input or textarea */
+.input-container {
+  @apply mb-16;
+}
+/* Input and textarea boxes */
+.inputbox {
+  @apply rounded-md border border-gray-400 px-3 py-3 bg-white  w-full text-gray-800;
+}
+/* Input and textarea focus behavior */
+.inputbox:focus {
+  @apply ring-2 ring-purple-300; /* border-green-500 */
+}
+/* Form field labels */
+.formfieldlabel {
+  @apply text-base leading-8 font-sans not-italic font-medium text-gray-600 pb-4;
+}
+/* Select button */
+.btn.selectbtn {
+  @apply border-gray-300 font-medium text-sm inline border w-48;
+}
+/* Hover style for selected select button */
+.btn.selectbtn:hover {
+  @apply bg-gray-100;
+}
+/* Active style for selected select button */
+.btn.selectbtn:active,
+.btn.selectbtn:focus,
+.btn.selectbtn:checked,
+.selectedOption {
+  @apply bg-green-100;
+}
+/* For 2 x 2 workout type button grid layout */
+.workoutTypeGrid {
+  @apply grid grid-cols-2 gap-2 place-content-center;
+}
+/* Main container for dropdown */
+.dropdown-parent {
+  @apply w-full rounded-md border border-gray-400 px-2 py-2 bg-blue-100 text-gray-800 grid mb-4;
+}
+/* Custom field styling for dropdown */
+.dropdown-field {
+  @apply w-full row-start-1 col-start-1 bg-transparent z-10 max-h-24 overflow-y-auto;
+}
+/* Styling for caret square icon */
+.dropdown-caret {
+  @apply text-gray-500 row-start-1 col-start-1 z-0 justify-self-end;
+}
+
+/*--------------------------------- Buttons and Links ---------------------------------*/
+/* Link that goes back to the main component page */
+.back-link {
+  @apply w-full lg:w-4/12 px-4;
+}
+/* Div that contains the save/cancel or edit/delete buttons */
+.btn-div {
+  @apply flex flex-row justify-between;
+}
+/* Button container */
+.btn {
+  @apply w-40 px-4 py-2 rounded-md sm:mr-2 mb-1;
+}
+/* A11y: Set focusring for custom buttons */
+.btn:focus-visible {
+  outline: 1px dotted #000;
+}
+/* Button for submit/save */
+.btn.save {
+  @apply bg-purple-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1;
+}
+/* Active styles for submit/save button  */
+.btn.save:active {
+  @apply transition duration-100 ease-in-out ring-4 ring-purple-300  animate-pulse;
+}
+/* Hover styles for submit/save button  */
+.btn.save:hover {
+  @apply bg-purple-700;
+}
+/* Button for edit */
+.btn.edit {
+  @apply bg-white border border-purple-600 text-purple-600 font-bold text-base;
+}
+/* Active styles for edit button  */
+.btn.edit:active {
+  @apply transition duration-100 ease-in-out ring-4 ring-purple-300 animate-pulse;
+}
+/* Hover styles for edit button  */
+.btn.edit:hover {
+  @apply bg-purple-700 text-white;
+}
+/* Button for cancel/discard */
+.btn.cancel {
+  @apply bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1;
+}
+/* Active styles for cancel/discard button  */
+.btn.cancel:active {
+  @apply transition duration-100 ease-in-out ring-4 ring-pink-300  animate-pulse;
+}
+/* Hover styles for cancel/discard  button  */
+.btn.cancel:hover {
+  @apply bg-pink-700;
+}
+/* Button for delete */
+.btn.delete {
+  @apply bg-white text-pink-600 border border-pink-600 font-bold text-base;
+}
+/* Active styles for delete button  */
+.btn.delete:active {
+  @apply transition duration-100 ease-in-out ring-4 ring-pink-300  animate-pulse;
+}
+/* Hover styles for delete  button  */
+.btn.delete:hover {
+  @apply bg-pink-700 text-white;
+}

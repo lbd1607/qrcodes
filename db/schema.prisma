@@ -23,6 +23,7 @@ model User {
 
   tokens   Token[]
   sessions Session[]
+  Blog     Blog[]
 }
 
 model Session {
@@ -63,3 +64,16 @@ model Token {
 // enum TokenType {
 //   RESET_PASSWORD
 // }
+
+//---------------------------- My Models -------------------------
+
+model Blog {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+  qrcode    String?
+}
