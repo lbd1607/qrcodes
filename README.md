@@ -1,173 +1,85 @@
-[![Blitz.js](https://raw.githubusercontent.com/blitz-js/art/master/github-cover-photo.png)](https://blitzjs.com)
+# **Add QR Codes from User Input**
 
-This is a [Blitz.js](https://github.com/blitz-js/blitz) app.
+Learn how to use qrcodes.react to create QR codes from user input in a Blitz.js app. This tutorial assumes that you've already installed Blitz and created a project. For this example, we're using a model named "Blog".
 
-# **qrcodes**
+To learn more about Blitz, refer to the [Blitz.js Documentation](https://blitzjs.com/docs/getting-started).
 
-## Getting Started
+## Installation
 
-Run your app in the development mode.
+Go to your project folder and install `qrcode.react` as a devDependency:
 
-```
-blitz dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Environment Variables
-
-Ensure the `.env.local` file has required environment variables:
-
-```
-DATABASE_URL=postgresql://<YOUR_DB_USERNAME>@localhost:5432/qrcodes
+```bash
+npm i -D qrcode.react
 ```
 
-Ensure the `.env.test.local` file has required environment variables:
+## Add the QR Code Field to the Prisma Model
 
-```
-DATABASE_URL=postgresql://<YOUR_DB_USERNAME>@localhost:5432/qrcodes_test
-```
+Before we start using Blitz to create forms, we need to create a Prisma model and generate the model folders.
 
-## Tests
+Go to **db** and open `schema.Prisma`.
 
-Runs your tests using Jest.
+For this tutorial, we'll create a simple blog model that contains a `qrcode` string for the user input later. Add the following field to your model:
 
-```
-yarn test
+```prisma
+qrcode    String?
 ```
 
-Blitz comes with a test setup using [Jest](https://jestjs.io/) and [react-testing-library](https://testing-library.com/).
+If you want to make this field required, remove `?` from `String`.
 
-## Commands
+Before continuing, migrate the database:
 
-Blitz comes with a powerful CLI that is designed to make development easy and fast. You can install it with `npm i -g blitz`
-
-```
-  blitz [COMMAND]
-
-  dev       Start a development server
-  build     Create a production build
-  start     Start a production server
-  export    Export your Blitz app as a static application
-  prisma    Run prisma commands
-  generate  Generate new files for your Blitz project
-  console   Run the Blitz console REPL
-  install   Install a recipe
-  help      Display help for blitz
-  test      Run project tests
+```bash
+ blitz prisma migrate dev --preview-feature
 ```
 
-You can read more about it on the [CLI Overview](https://blitzjs.com/docs/cli-overview) documentation.
+## Configure Mutations
 
-## What's included?
+Go to **Blogs/Mutations** and add the new **qrcodes** attribute to **updateBlog.ts**:
 
-Here is the starting structure of your app.
-
-```
-qrcodes
-├── app/
-│   ├── api/
-│   ├── auth/
-│   │   ├── components/
-│   │   │   ├── LoginForm.tsx
-│   │   │   └── SignupForm.tsx
-│   │   ├── mutations/
-│   │   │   ├── changePassword.ts
-│   │   │   ├── forgotPassword.test.ts
-│   │   │   ├── forgotPassword.ts
-│   │   │   ├── login.ts
-│   │   │   ├── logout.ts
-│   │   │   ├── resetPassword.test.ts
-│   │   │   ├── resetPassword.ts
-│   │   │   └── signup.ts
-│   │   ├── pages/
-│   │   │   ├── forgot-password.tsx
-│   │   │   ├── login.tsx
-│   │   │   ├── reset-password.tsx
-│   │   │   └── signup.tsx
-│   │   └── validations.ts
-│   ├── core/
-│   │   ├── components/
-│   │   │   ├── Form.tsx
-│   │   │   └── LabeledTextField.tsx
-│   │   ├── hooks/
-│   │   │   └── useCurrentUser.ts
-│   │   └── layouts/
-│   │       └── Layout.tsx
-│   ├── pages/
-│   │   ├── 404.tsx
-│   │   ├── _app.tsx
-│   │   ├── _document.tsx
-│   │   ├── index.test.tsx
-│   │   └── index.tsx
-│   └── users/
-│       └── queries/
-│           └── getCurrentUser.ts
-├── db/
-│   ├── index.ts
-│   ├── schema.prisma
-│   └── seeds.ts
-├── integrations/
-├── mailers/
-│   └── forgotPasswordMailer.ts
-├── public/
-│   ├── favicon.ico*
-│   └── logo.png
-├── test/
-│   ├── setup.ts
-│   └── utils.tsx
-├── README.md
-├── babel.config.js
-├── blitz.config.js
-├── jest.config.js
-├── package.json
-├── tsconfig.json
-├── types.d.ts
-├── types.ts
-└── yarn.lock
+```ts
+qrcode: z.string(),
 ```
 
-These files are:
+If you want to make the QR code URL a required field, you'll also need to add it to **updateBlog.ts**.
 
-- The `app/` folder is a container for most of your project. This is where you’ll put any pages or API routes.
+## Add the QR Code Field
 
-- `db/` is where your database configuration goes. If you’re writing models or checking migrations, this is where to go.
+Now we can start creating the forms and the main Blogs page. For these, we'll be working in the following files:
 
-- `public/` is a folder where you will put any static assets. If you have images, files, or videos which you want to use in your app, this is where to put them.
+- **blogs/components/BlogForm.tsx**: The "Add Blog" form
+- **pages/blogs/\[blogId]\.tsx**: The blog page
 
-- `integrations/` is a folder to put all third-party integrations like with Stripe, Sentry, etc.
+To run the app, use the command `blitz dev`, then open [localhost:3000](http://localhost:3000).
 
-- `test/` is a folder where you can put test utilities and integration tests.
+In **BlogForm.tsx**, add the QR code as a `<LabeledTextField />` with a name of `qrcode`:
 
-- `package.json` contains information about your dependencies and devDependencies. If you’re using a tool like `npm` or `yarn`, you won’t have to worry about this much.
+```tsx
+<LabeledTextField name="qrcode" placeholder="" label="QR Code URL" />
+```
 
-- `tsconfig.json` is our recommended setup for TypeScript.
+When a user enters a URL into this field, it's saved into the database and can also be edited later.
 
-- `.babelrc.js`, `.env`, etc. ("dotfiles") are configuration files for various bits of JavaScript tooling.
+:notebook: **Note:** Follow best practices and sanitize user input before allowing it to be posted to any database.
 
-- `blitz.config.js` is for advanced custom configuration of Blitz. It extends [`next.config.js`](https://nextjs.org/docs/api-reference/next.config.js/introduction).
+In **\[blogId]\.tsx**, we'll add the QRCode component so the URL that the user enters is rendered as a QR code.
 
-- `jest.config.js` contains config for Jest tests. You can [customize it if needed](https://jestjs.io/docs/en/configuration).
+In the Blog component, enter the following variables before the return statement:
 
-You can read more about it in the [File Structure](https://blitzjs.com/docs/file-structure) section of the documentation.
+```javascript
+var React = require("react")
+var QRCode = require("qrcode.react")
+```
 
-### Tools included
+In the body of the return statement, insert the QRCode component:
 
-Blitz comes with a set of tools that corrects and formats your code, facilitating its future maintenance. You can modify their options and even uninstall them.
+```tsx
+<QRCode value={blog.qrcode || "https://github.com/"} />
+```
 
-- **ESLint**: It lints your code: searches for bad practices and tell you about it. You can customize it via the `.eslintrc.js`, and you can install (or even write) plugins to have it the way you like it. It already comes with the [`blitz`](https://github.com/blitz-js/blitz/tree/canary/packages/eslint-config) config, but you can remove it safely. [Learn More](https://eslint.org).
-- **Husky**: It adds [githooks](https://git-scm.com/docs/githooks), little pieces of code that get executed when certain Git events are triggerd. For example, `pre-commit` is triggered just before a commit is created. You can see the current hooks inside `.husky/`. If are having problems commiting and pushing, check out ther [troubleshooting](https://typicode.github.io/husky/#/?id=troubleshoot) guide. [Learn More](https://typicode.github.io/husky).
-- **Prettier**: It formats your code to look the same everywhere. You can configure it via the `.prettierrc` file. The `.prettierignore` contains the files that should be ignored by Prettier; useful when you have large files or when you want to keep a custom formatting. [Learn More](https://prettier.io).
+Typescript will require either a check to ensure that `blog.qrcode` exists or an alternative. In this example, we've made the GitHub website the alternative URL.
 
-## Learn more
+When the page is rendered, the QR code URL is rendered as a QR code:
 
-Read the [Blitz.js Documentation](https://blitzjs.com/docs/getting-started) to learn more.
+![App page with QR Code](images/appwithqr.png)
 
-The Blitz community is warm, safe, diverse, inclusive, and fun! Feel free to reach out to us in any of our communication channels.
-
-- [Website](https://blitzjs.com/)
-- [Discord](https://discord.blitzjs.com/)
-- [Report an issue](https://github.com/blitz-js/blitz/issues/new/choose)
-- [Forum discussions](https://github.com/blitz-js/blitz/discussions)
-- [How to Contribute](https://blitzjs.com/docs/contributing)
-- [Sponsor or donate](https://github.com/blitz-js/blitz#sponsors-and-donations)
+With some modifications to the style using a print breakpoint, users can print the page and distribute it with a working QR code.

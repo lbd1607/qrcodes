@@ -16,9 +16,6 @@ export const BlogsList = () => {
 
   const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" } as const
 
-  var React = require("react")
-  var QRCode = require("qrcode.react")
-
   return (
     <Fragment>
       <div className="container mx-auto px-4 mt-24">
