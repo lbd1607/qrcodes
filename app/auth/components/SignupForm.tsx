@@ -1,4 +1,4 @@
-import { useMutation } from "blitz"
+import { useMutation, useRouter } from "blitz"
 import { LabeledTextField } from "app/core/components/LabeledTextField"
 import { Form, FORM_ERROR } from "app/core/components/Form"
 import signup from "app/auth/mutations/signup"
@@ -10,6 +10,7 @@ type SignupFormProps = {
 
 export const SignupForm = (props: SignupFormProps) => {
   const [signupMutation] = useMutation(signup)
+  const router = useRouter()
 
   return (
     <div>
@@ -19,6 +20,8 @@ export const SignupForm = (props: SignupFormProps) => {
         submitText="Create Account"
         schema={Signup}
         initialValues={{ email: "", password: "" }}
+        cancelText="Cancel"
+        cancelURL="/"
         onSubmit={async (values) => {
           try {
             await signupMutation(values)
@@ -29,6 +32,16 @@ export const SignupForm = (props: SignupFormProps) => {
               return { email: "This email is already being used" }
             } else {
               return { [FORM_ERROR]: error.toString() }
+            }
+          }
+        }}
+        onCancel={async () => {
+          try {
+            router.back()
+          } catch (error) {
+            console.error(error)
+            return {
+              [FORM_ERROR]: error.toString(),
             }
           }
         }}
