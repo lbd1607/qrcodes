@@ -1,36 +1,54 @@
 # **Add QR Codes from User Input**
 
-Learn how to use the `qrcode.react` generator to create QR codes from user input in a Blitz.js app. This tutorial assumes that you've already installed Blitz and created a project. For this example, we're using a model named "Blog".
+In this guide, you'll learn how to use the `qrcode.react` generator to create QR codes from user input in a Blitz.js app by completing the following steps:
 
-To learn more about setting up Blitz, refer to the [Blitz.js Documentation](https://blitzjs.com/docs/getting-started).
+1. Install the QR Code Generator
+1. Add the QR Code Field to the Prisma Model
+1. Configure Mutations
+1. Add the `<QRCode/>` Component to the Form
+1. Add the QR Code to the Rendering Page
+
+<br/>
+
+## Requirements
+
+For this tutorial, we assume that you've already installed Blitz and created a project. To learn more about setting up a Blitz project, refer to the [Blitz.js documentation](https://blitzjs.com/docs/getting-started).
+
+<br/>
 
 ## Step 1: Install the QR Code Generator
 
-Go to your project folder and install `qrcode.react` as a devDependency:
+Go to your project folder and install `qrcode.react`:
 
 ```
-npm i -D qrcode.react
+npm install qrcode.react
 ```
+
+<br/>
 
 ## Step 2: Add the QR Code Field to the Prisma Model
 
-Before we start using Blitz to create forms, we need to add a field for the QR code URL to our Prisma model and migrate the database.
+Before you start using Blitz to create forms, you'll need to add a field for the QR code URL to our Prisma model and migrate the database. For this example, we're using a model named "Blog".
 
-Go to **db** and open `schema.Prisma`.
+1. Go to **db** and open `schema.Prisma`.
 
-Add a field for the QR code URL to your model:
+1. Add a field for the QR code URL to your model:
 
-```javascript
-qrcode    String?
-```
+   ```javascript
+   qrcode    String?
+   ```
 
-> **Note**: If you want to make this field required, remove the optional flag `?` from `String`.
+   <span><blockquote style="border-left:4px solid #2ee87f; border-radius:1px; padding: 0.75rem; margin: 1rem 0rem;">
+   **Note**: If you want to make this field required, remove the optional flag `?` from `String`.
+   </blogkquote></span>
 
-Before continuing to the next step, migrate the database:
+1. Before continuing to the next step, migrate the database:
 
-```
- blitz prisma migrate dev --preview-feature
-```
+   ```
+   blitz prisma migrate dev --preview-feature
+   ```
+
+<br/>
 
 ## Step 3: Configure Mutations
 
@@ -40,36 +58,39 @@ Go to **Blogs/Mutations** and add the new **qrcodes** property to **updateBlog.t
 qrcode: z.string(),
 ```
 
-If you made the QR code URL a required field when you added it to your Prisma model, you'll also need to add the property to **updateBlog.ts**.
+If you made the QR code URL a required field when you added it to your Prisma model, you'll also need to add the `qrcode: z.string()` property to **createBlog.ts**.
 
-## Step 4: Add the QR Code Field to the Form
+<br/>
 
-Now we can start creating the forms and the main Blogs page. For these, we'll be working in the following files:
+## Step 4: Add the `<QRCode/>` Component to the Form
 
-- **blogs/components/BlogForm.tsx**: The "Add Blog" form
-- **pages/blogs/\[blogId]\.tsx**: The blog page
+Now you can start creating the forms and the main Blogs page. For these, you'll be working in the "Add Blog" form **blogs/components/BlogForm.tsx** and the blog's page **pages/blogs/\[blogId]\.tsx**.
 
-To run the app, run the command `blitz dev`, then open [localhost:3000](http://localhost:3000).
+1. To run the app, run the command `blitz dev`, then open [localhost:3000](http://localhost:3000).
 
-In **BlogForm.tsx**, add the QR code as a `<LabeledTextField />` with a name of `qrcode`:
+1. In **BlogForm.tsx**, add the QR code as a `<LabeledTextField/>` with a name of `qrcode`:
 
-```javascript
-<LabeledTextField name="qrcode" label="QR Code URL" />
-```
+   ```javascript
+   <LabeledTextField name="qrcode" label="QR Code URL" />
+   ```
 
-When a user enters a URL into this field, it's saved into the database and can be edited later.
+1. When a user enters a URL into this field, it's saved into the database and can be edited later.
 
-> **Note**: Follow best practices and sanitize user input before allowing it to be posted to any database.
+   <span><blockquote style="border-left:4px solid #ebd534; border-radius:1px; padding: 0.75rem; margin: 1rem 0rem;">
+   **Caution**: If you're using `dangerouslySetInnerHTML` on your `LabeledTextField` component, you'll need to manually sanitize user input before allowing it to be posted to the database.
+   </blockquote></span>
+
+<br/>
 
 ## Step 5: Add the QR Code to the Rendering Page
 
-In **\[blogId]\.tsx**, we'll add the QRCode component so the URL that the user enters is rendered as a QR code.
+In **\[blogId]\.tsx**, you'll add the QRCode component so the URL that the user enters is rendered as a QR code.
 
-In the Blog component, create the `React` and `QRCode` variables in the component before the return statement:
+First, go to the Blog component and create the `React` and `QRCode` variables inside the main component before the return statement:
 
 ```javascript
 export const Blog = () => {
- ...
+...
   var React = require("react")
   var QRCode = require("qrcode.react")
 
@@ -78,14 +99,22 @@ export const Blog = () => {
 
 ```
 
-In the body of the return statement where your HTML is rendered, insert the QRCode component:
+Then insert the `<QRCode/>` component inside the return statement where your HTML is rendered:
 
 ```javascript
+//Typescript requires that the QR code URL is not potentially null. For this example, the GitHub website is the alternate URL.
+
 <QRCode value={blog.qrcode || "https://github.com/"} />
 ```
 
-Typescript requires that the QR code URL is not potentially null. For this example, we've made the GitHub website an alternate URL.
-
+<br/>
 When the page is rendered, the URL that the user entered is rendered as a QR code:
 
-![App page with QR Code](images/appwithqr.png)
+![App page with QR code](images/appwithqr.png)
+
+<br>
+
+## More Information
+
+- [Blitz.js documentation](https://blitzjs.com/docs/getting-started) - The full set of docs for Blitz, including a brief tutorial.
+- [qrcode.react project on Github](https://github.com/zpao/qrcode.react) - The Github project for the `qrcodes.react` QR code generator.
