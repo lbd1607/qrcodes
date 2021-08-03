@@ -55,13 +55,13 @@ export const Blog = () => {
                           More Info:
                           <a
                             className="text-blue-600 hover:text-blue-800"
-                            href={blog.qrcode ? blog.qrcode.toString() : "https://github.com/"}
+                            href={blog.qrcode ? blog.qrcode.toString() : ""}
                           >
                             {" "}
-                            {blog.qrcode ? blog.qrcode.toString() : "https://github.com/"}
+                            {blog.qrcode ? blog.qrcode.toString() : ""}
                           </a>
                         </p>
-                        <QRCode value={blog.qrcode || "https://github.com/"} />
+                        <QRCode value={blog.qrcode} />
                       </div>
                     </div>
 

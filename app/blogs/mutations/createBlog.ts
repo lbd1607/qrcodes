@@ -5,6 +5,7 @@ import { z } from "zod"
 const CreateBlog = z.object({
   title: z.string(),
   content: z.string(),
+  qrcode: z.string(),
   /* MODEL
   id        Int      @id @default(autoincrement())
   title     String?
